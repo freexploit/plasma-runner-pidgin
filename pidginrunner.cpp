@@ -46,14 +46,14 @@ void PidginRunner::match(Plasma::RunnerContext &context)
         std::for_each(contacts.begin(), contacts.end(), [&contacts, &matches, this](const QString& c )
         {
             Plasma::QueryMatch match(this);
-            match.setText(i18n("Chat with %1", c));
+            QVariantMap map = d_func()->m_connector.buddyId(c);
+            match.setText(c);
+            match.setSubtext(map["buddyStatus"].toString());
             match.setData(c);
             match.setId(c);
             match.setType(Plasma::QueryMatch::ExactMatch);
-            QVariantMap map = d_func()->m_connector.buddyId(c);
-            QIcon buddyIcon = map["buddyIcon"].value<QIcon>();
-            qDebug () << buddyIcon;
-            match.setIcon(buddyIcon);
+            QIcon icon(map["buddyIconPath"].toString());
+            match.setIcon(icon);
             matches.append(match);
 
         });

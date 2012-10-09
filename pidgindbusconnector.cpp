@@ -12,6 +12,10 @@
 
 #include <algorithm>
 
+namespace
+{
+    const QString g_scIconPath="/usr/share/pixmaps/pidgin/status/48";
+}
 
 class PidginDBusConnectorPrivate
 {
@@ -40,6 +44,50 @@ public:
             qWarning() << " IFACE not valid";
         }
         return ret ;
+    }
+
+    QVariantMap status(int buddy)
+    {
+        QVariantMap ret ;
+        ret["status"] = "Status not known";
+        ret["icon"]="";
+        int presence = call<int>("PurpleBuddyGetPresence",buddy);
+
+        int isOnline = call<int>("PurplePresenceIsOnline",presence);
+        int isAvailable = call<int>("PurplePresenceIsAvailable",presence);
+        int isIdle = call<int>("PurplePresenceIsIdle",presence);
+
+        if( isOnline)
+        {
+            ret["status"] = "Away";
+            ret["icon"] = g_scIconPath + "/away.png";
+        }
+        else
+        {
+            ret["status"] = "Offline";
+            ret["icon"] = g_scIconPath + "/offline.png";
+        }
+
+        if ( isAvailable )
+        {
+            ret["status"] = "Available";
+            ret["icon"] = g_scIconPath + "/available.png";
+        }
+
+        if(isIdle)
+        {
+            ret["status"] = "Away";
+            ret["icon"] = g_scIconPath + "/away.png";
+        }
+        return ret;
+    }
+
+    QString statusMessage(int buddy)
+    {
+        int presenceid = call<int>("PurpleBuddyGetPresence",buddy);
+        int statusid = call<int>("PurplePresenceGetActiveStatus",presenceid);
+        QString statusMessage = call<QString>("PurpleStatusGetAttrString",statusid,"message");
+        return statusMessage;
     }
 
     QDBusInterface m_iface;
@@ -73,10 +121,10 @@ void PidginDBusConnector::init()
             map["buddyID"] = buddyID ;
             map["buddyAlias"] = buddyName ;
             map["buddyName"] = d_func()->call<QString>("PurpleBuddyGetName",buddyID);
-            QVariant pres = d_func()->call<int>("PurpleBuddyGetPresence",buddyID);
-            QString pres1 = d_func()->call<QString>("PurplePresenceGetChatUser",pres);
-            qDebug() << pres1 ;
-            map["buddyPresence"] = pres1 ;
+            QVariantMap status = d_func()->status(buddyID);
+            map["buddyStatus"] =status["status"];
+            map["buddyStatusMessage"] = d_func()->statusMessage(buddyID);
+            map["buddyIconPath"] =status["icon"];
             d_func()->m_buddies[buddyName] = map ;
         });
     });
