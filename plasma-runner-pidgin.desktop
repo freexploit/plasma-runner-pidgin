@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=Pidgin Runner
+Comment=Pidgin contants exposed!
+Type=Service
+X-KDE-ServiceTypes=Plasma/Runner
+
+X-KDE-Library=krunner_pidginrunner
+X-KDE-PluginInfo-Author=Bartek Taczala
+X-KDE-PluginInfo-Email=w0lanto@gmail.com
+X-KDE-PluginInfo-Name=pidginrunner
+X-KDE-PluginInfo-Version=0.1
+X-KDE-PluginInfo-Website=http://plasma.kde.org/
+X-KDE-PluginInfo-License=LGPL
+X-KDE-PluginInfo-EnabledByDefault=true
