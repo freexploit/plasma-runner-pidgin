@@ -25,7 +25,7 @@ PidginRunner::PidginRunner(QObject *parent, const QVariantList &args) :
 {
     kWarning() << Q_FUNC_INFO ;
     setSpeed(SlowSpeed);
-    setPriority(LowPriority);
+    setPriority(HighPriority);
     setHasRunOptions(false);
 }
 

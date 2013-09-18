@@ -106,7 +106,7 @@ PidginDBusConnector::PidginDBusConnector(QObject *parent) :
 void PidginDBusConnector::init()
 {
     QMutexLocker ls(&(d_func()->m_mutex));
-
+    
     typedef QList<int> IntList ;
     IntList accounts = d_func()->call<IntList>("PurpleAccountsGetAllActive");
     std::for_each(accounts.begin(), accounts.end(), [&](int accId ){
