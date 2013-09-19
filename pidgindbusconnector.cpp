@@ -156,6 +156,55 @@ void PidginDBusConnector::startChatWith(const QString &contactName)
                              contact["buddyName"]);
     }
 }
+ 
+void PidginDBusConnector::setStatus(const QString& status)
+{
+   QList<int> all_statuses = d_func()->call<QList<int>>("PurpleSavedstatusesGetAll");
+   int status_id;
+   QHash<int,int> status_items;
+   
+   for (int i =0;i<all_statuses.size() ;i++){
+	
+     int status_type =  d_func()->call<int>("PurpleSavedstatusGetType",all_statuses.at(i));
+     status_items.insert(status_type,all_statuses.at(i));
+     
+  }
+    //STATUS_OFFLINE = 1 STATUS_AVAILABLE = 2 STATUS_UNAVAILABLE = 3 STATUS_INVISIBLE = 4 STATUS_AWAY = 5
+  
+  if(status.contains("offline")){
+    if(status_items.contains(1)){
+      status_id=status_items.value(1);
+    }
+  }
+  
+  if(status.contains("online")){
+    if(status_items.contains(2)){
+      status_id=status_items.value(2);
+    }
+  }
+  
+  if(status.contains("busy")){
+    if(status_items.contains(3)){
+      status_id=status_items.value(3);
+    }
+  }
+  
+  if(status.contains("invisible")){
+    if(status_items.contains(4)){
+      status_id=status_items.value(4);
+    }
+  }
+  if(status.contains("away")){
+    if(status_items.contains(5)){
+      status_id=status_items.value(5);
+    }
+  }
+  QVariant v(status_id);
+  int d = d_func()->call<int>("PurpleSavedstatusActive",v);
+}
+
+
+
 
 QStringList PidginDBusConnector::allContacts()
 {

@@ -34,7 +34,7 @@ void PidginRunner::match(Plasma::RunnerContext &context)
 
     kDebug() << Q_FUNC_INFO ;
     QString query = context.query();
-    if ( !query.isEmpty() )
+    if ( !query.isEmpty() && !query.contains("status"))
     {
         kDebug() << " Pidgin runner trigger word";
         QString contactName = query ;
@@ -59,13 +59,26 @@ void PidginRunner::match(Plasma::RunnerContext &context)
         });
         context.addMatches(context.query(), matches);
     }
+    else{
+     
+      QStringList statuses = {"online","offline","busy","invisible","away"};
+      QString status=query.remove("status");
+      //show matches
+    }
+
 }
 
 void PidginRunner::run(const Plasma::RunnerContext &context, const Plasma::QueryMatch &match)
 {
     Q_UNUSED(context);
     kDebug() << match.text() << match.data().toString();
-    d_func()->m_connector.startChatWith(match.data().toString());
+    if(match.data().toString().contains("status ")){
+      QString status= match.data().toString().remove("status ");
+      d_func()->m_connector.setStatus(status);
+    }
+    else{
+      d_func()->m_connector.startChatWith(match.data().toString());
+    }
 }
 
 QStringList PidginRunner::contacts()

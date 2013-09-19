@@ -20,6 +20,7 @@ public slots:
     void init() ;
     void deinit();
     void startChatWith(const QString& contactName) ;
+    void setStatus(const QString& status);
 protected:
     PidginDBusConnectorPrivate* const d_ptr ;
     Q_DECLARE_PRIVATE(PidginDBusConnector)
