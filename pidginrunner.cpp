@@ -25,7 +25,7 @@ PidginRunner::PidginRunner(QObject *parent, const QVariantList &args) :
 {
     kWarning() << Q_FUNC_INFO ;
     setSpeed(SlowSpeed);
-    setPriority(HighPriority);
+    setPriority(HighestPriority);
     setHasRunOptions(false);
 }
 
@@ -59,11 +59,26 @@ void PidginRunner::match(Plasma::RunnerContext &context)
         });
         context.addMatches(context.query(), matches);
     }
-    else{
+    if (query.contains("status ")){
      
-      QStringList statuses = {"online","offline","busy","invisible","away"};
-      QString status=query.remove("status");
-      //show matches
+      QStringList statuses ;
+      statuses << "online" << "offline" << "busy" << "invisible" << "away";
+      QString status=query.remove("status ");
+      Plasma::QueryMatch match(this);
+      
+      QStringListIterator it(statuses);
+      QString message = "set status to: ";
+      while(it.hasNext()){
+      
+	if(it.next().contains(status)){
+	    
+	    message.append(status); 
+	    match.setText(message);
+	    match.setType(Plasma::QueryMatch::ExactMatch);
+	}
+	
+      }
+      context.addMatch(status,match);
     }
 
 }
