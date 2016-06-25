@@ -1,24 +1,20 @@
-project(pidginplasmarunner)
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.12)
+project(PidginRunner)
 
-set(KDE_MIN_VERSION "4.3.60") # for the < 4.2 macro
-find_package(KDE4 4.3.60 REQUIRED)
-include(KDE4Defaults)
-include(MacroLibrary)
+find_package(ECM 1.0.0 REQUIRED NO_MODULE)
+set (CMAKE_MODULE_PATH
+     ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} ${CMAKE_MODULE_PATH}
+     CMAKE_EXPORT_COMPILE_COMMANDS 1
+)
 
-add_definitions(${QT_DEFINITIONS} ${KDE4_DEFINITIONS} -std=c++11)
-include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES})
+# Find the required Libaries
+find_package (Qt5 REQUIRED CONFIG COMPONENTS Widgets Core Xml)
+find_package (KF5 REQUIRED COMPONENTS KIO I18n Service Runner Plasma)
 
-set(example_SRCS pidginrunner.cpp pidginrunner.h pidgindbusconnector.cpp pidgindbusconnector.h)
-kde4_add_plugin(krunner_pidginrunner ${example_SRCS})
-target_link_libraries(krunner_pidginrunner ${KDE4_PLASMA_LIBS}  ${KDE4_KIO_LIBS})
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(KDECompilerSettings)
 
-install(TARGETS krunner_pidginrunner DESTINATION ${PLUGIN_INSTALL_DIR})
-install(FILES plasma-runner-pidgin.desktop DESTINATION ${SERVICES_INSTALL_DIR})
+add_subdirectory(runner)
 
-add_executable(tester ${example_SRCS} main.cpp)
-target_link_libraries(tester ${KDE4_PLASMA_LIBS}  ${KDE4_KIO_LIBS} ${Boost_LIBRARIES})
-
-#aux_source_directory(. SRC_LIST)
-#add_executable(${PROJECT_NAME} ${SRC_LIST})
 

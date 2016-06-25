@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=Pidgin runner
+Comment=Find Pidgin Contacts
+X-KDE-ServiceTypes=Plasma/Runner
+Type=Service
+X-KDE-Library=krunner_pidgin
+X-KDE-PluginInfo-Name=krunner_pidgin
+X-KDE-PluginInfo-Version=0.4.1
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=false
+X-KDE-PluginInfo-Email=christopher@valerio.guru
+X-KDE-PluginInfo-Author=Christopher Valerio
+X-KDE-PluginInfo-EnabledByDefault=true
+X-Plasma-AdvertiseSingleRunnerQueryMode=true
