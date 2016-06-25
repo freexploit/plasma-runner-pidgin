@@ -52,6 +52,11 @@ pidgin_d("im.pidgin.purple.PurpleService","/im/pidgin/purple/PurpleObject","im.p
             map["buddyID"] = buddyID ;
             map["buddyAlias"] = buddyName ;
             map["buddyName"] = call<QString>("PurpleBuddyGetName",buddyID);
+            QVariantMap status = getStatus(buddyID);
+            map["buddyStatus"] =status["status"];
+            map["buddyStatusMessage"] = getStatusMessage(buddyID);
+            map["buddyIconPath"]=status["icon"];
+
             this->people[buddyName]=map;
         });
 
@@ -171,6 +176,13 @@ QVariantMap PidginDbus::buddyId(const QString &buddyName)
 
 }
 
+QString PidginDbus::getStatusMessage(int buddy)
+{
+    int presenceid = call<int>("PurpleBuddyGetPresence",buddy);
+    int statusid = call<int>("PurplePresenceGetActiveStatus",presenceid);
+    QString statusMessage = call<QString>("PurpleStatusGetAttrString",statusid,"message");
+    return statusMessage;
+}
 
 
 #include "moc_pidgin_dbus.cpp"
