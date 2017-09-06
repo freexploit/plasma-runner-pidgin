@@ -29,3 +29,10 @@ Then just look for your contacts on runner.
 - Fix images issue
 - Add actions
 - Create a plasmoid
+
+## Donations
+
+If you like my work, please donate:
+
+bitcoin: 1EHbghyyYkiQgw75H9oaUZtUoGmhGBQyk4
+zcash: t1eg8pXr4W3DxJr86XLgUrBbk3BMAXgCpm4
